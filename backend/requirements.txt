@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+mcrcon
+pyjwt
+python-multipart
+docker
+websockets
