@@ -1,0 +1,29 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      ADMIN_PASSWORD: "" # web admin password
+      RCON_HOST: "" # minecraft container name
+      RCON_PORT: "25575" # minecraft rcon port
+      RCON_PASSWORD: "" # minecraft rcon password
+      SECRET_KEY: "" # JWT secret
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # read minecraft container logs
+
+  frontend:
+    build: ./frontend
+    container_name: minecraft_admin_frontend
+    environment:
+      - VITE_API_URL=http://backend:8000
+      - VITE_WS_URL=ws://backend:8000/ws/logs
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+networks:
+  default:
+    external: true
+    name: "minecraft-net" # use same network with minecraft server container
